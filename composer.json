@@ -1,0 +1,24 @@
+{
+  "name": "funkytime/yuki",
+  "description": "A php connector for Yuki's Sales API (subset), intended to create Sales Invoices.",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "FunkyTime",
+      "homepage": "https://funkytime.com"
+    }
+  ],
+  "require": {
+    "php": "^5.3.3 || ^7.0"
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-master": "0.1.x-dev"
+    }
+  },
+  "autoload": {
+    "psr-4": {
+      "FunkyTime\\": "src/"
+    }
+  }
+}
