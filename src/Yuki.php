@@ -66,7 +66,7 @@ class Yuki
 		
 		// Client (company)
 		$Contact = '';
-		foreach(['ContactCode', 'FullName', 'CountryCode', 'City', 'Zipcode', 'AddressLine_1', 'AddressLine_2', 'EmailAddress', 'VATNumber', 'ContactType'] as $k) {
+		foreach(['ContactCode', 'FullName', 'CountryCode', 'City', 'Zipcode', 'AddressLine_1', 'AddressLine_2', 'EmailAddress', 'CoCNumber', 'VATNumber', 'ContactType'] as $k) {
 			if(!empty($invoice['Contact'][$k])) $Contact .= "<$k>{$invoice['Contact'][$k]}</$k>";
 		}
 		$SalesInvoice .= "<Contact>$Contact</Contact>";
