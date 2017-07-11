@@ -37,6 +37,7 @@ class Yuki
      *   'InvoiceLines' => [
      *     'InvoiceLine' => [
      *       'ProductQuantity' => '',
+     *       'LineVATAmount' => '',
      *       'Product' => [
      *          'Description' => '',
      *          ...
@@ -79,11 +80,15 @@ class Yuki
         if(!empty($invoice['InvoiceLines'])) {
             $InvoiceLines = [];
             foreach($invoice['InvoiceLines'] as $InvoiceLine) {
+                $Line = '';
+                foreach(['ProductQuantity', 'LineAmount', 'LineVATAmount'] as $k) {
+                    if(!empty($InvoiceLine[$k])) $Line .= "<$k>{$InvoiceLine[$k]}</$k>";
+                }
                 $Product = '';
                 foreach(['Description', 'SalesPrice', 'VATPercentage', 'VATType', 'GLAccountCode', 'Remarks'] as $k) {
                     if(!empty($InvoiceLine['Product'][$k])) $Product .= "<$k>{$InvoiceLine['Product'][$k]}</$k>";
                 }
-                $InvoiceLines[] = "<InvoiceLine><ProductQuantity>$InvoiceLine[ProductQuantity]</ProductQuantity><Product>$Product</Product></InvoiceLine>";
+                $InvoiceLines[] = "<InvoiceLine>$Line<Product>$Product</Product></InvoiceLine>";
             }
             $SalesInvoice .= '<InvoiceLines>'. implode($InvoiceLines) .'</InvoiceLines>';
         }
