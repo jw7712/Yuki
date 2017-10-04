@@ -1,6 +1,6 @@
 {
   "name": "funkytime/yuki",
-  "description": "A php connector for Yuki's Sales API (subset), intended to create Sales Invoices.",
+  "description": "A php connector for Yuki's Sales and Accounting API (subsets), intended to create Sales Invoices and get back payment status.",
   "license": "MIT",
   "authors": [
     {
@@ -9,7 +9,7 @@
     }
   ],
   "require": {
-    "php": "^5.3.3 || ^7.0"
+    "php": "^5.4 || ^7.0"
   },
   "extra": {
     "branch-alias": {
