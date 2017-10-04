@@ -1,5 +1,5 @@
 # funkytime/yuki
-A php connector for Yuki's Sales API (subset), intended to create Sales Invoices.
+A php connector for Yuki's Sales and Accounting API (subsets), intended to create Sales Invoices and get back payment status.
 
 ```php
 $invoice = [
@@ -21,5 +21,12 @@ $invoice = [
     ]
     ];
 ];
-new \FunkyTime\Yuki($api_key)->ProcessInvoice($invoice);
+$YukiSales = new \FunkyTime\Yuki($api_key, 'sales');
+$YukiSales->ProcessInvoice($invoice);
+```
+
+```php
+$YukiAccounting = new \FunkyTime\Yuki($api_key, 'accounting');
+$status = $YukiAccounting->GetInvoiceBalance($inv_reference);
+// Result: an array with keys 'openAmount' and 'originalAmount' 
 ```
