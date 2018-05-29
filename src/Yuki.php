@@ -14,6 +14,7 @@ use Exception, SoapClient, SoapVar;
  * @method array Administrations(array $params)
  * @method array ProcessSalesInvoices(array $params)
  * @method array CheckOutstandingItem(array $params)
+ * @method array NetRevenue(array $params)
  */
 class Yuki
 {
@@ -216,6 +217,15 @@ class Yuki
             default:
                 return self::SALES_WSDL;
                 break;
+        }
+    }
+
+    public function GetAdministrationNetRevenue($start, $end){
+        try{
+            return $this->NetRevenue(['sessionID' => $this->sid, 'administrationID' => $this->aid,'StartDate' => $start, 'EndDate' => $end]);
+        }
+        catch(Exception $e){
+            throw new Exception('Could not retrieve Net Revenue for adminstration ' . $this->aid . ' from ' . $start . ' until ' .$end);
         }
     }
 }
