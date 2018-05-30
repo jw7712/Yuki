@@ -25,8 +25,9 @@ class Yuki
 
     private $soap, // the SOAP client
         // the currently active identifiers for the logged in Yuki user:
-        $sid, // SessionID
-        $aid; // AdministrationID
+        $sid; // SessionID
+    public $aid; // AdministrationID
+
 
     /**
      * Wrapper for ProcessSalesInvoices. Will throw an Exception if it did not succeed (e.g. duplicate invoice number).
