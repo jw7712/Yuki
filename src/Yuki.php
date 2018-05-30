@@ -15,6 +15,8 @@ use Exception, SoapClient, SoapVar;
  * @method array ProcessSalesInvoices(array $params)
  * @method array CheckOutstandingItem(array $params)
  * @method array NetRevenue(array $params)
+ * @method array GLAccountBalance(array $params)
+ * @method array GLAccountTransactions(array $params)
  */
 class Yuki
 {
@@ -226,6 +228,24 @@ class Yuki
         }
         catch(Exception $e){
             throw new Exception('Could not retrieve Net Revenue for adminstration ' . $this->aid . ' from ' . $start . ' until ' .$end);
+        }
+    }
+
+    public function GetAccountBalance($date){
+        try{
+            return $this->GLAccountBalance(['sessionID' => $this->sid, 'administrationID' => $this->aid, 'transactionDate' => $date]);
+        }
+        catch(Exception $e){
+            throw new Exception('Could not retrieve AccountBalance for adminstration ' . $this->aid . ' and date: ' .$date);
+        }
+    }
+
+    public function GetTransactions($code, $start, $end){
+        try{
+            return $this->GLAccountTransactions(['sessionID' => $this->sid, 'administrationID' => $this->aid, 'GLAccountCode' => $code,'StartDate' => $start, 'EndDate' => $end]);
+        }
+        catch(Exception $e){
+            throw new Exception('Could not retrieve Transactions for adminstration ' . $this->aid . ' and accountcode: ' .$code. ' from ' . $start . ' until ' .$end);
         }
     }
 }
