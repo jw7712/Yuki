@@ -17,11 +17,13 @@ use Exception, SoapClient, SoapVar;
  * @method array NetRevenue(array $params)
  * @method array GLAccountBalance(array $params)
  * @method array GLAccountTransactions(array $params)
+ * @method array GetGLAccountScheme(array $params)
  */
 class Yuki
 {
     const SALES_WSDL = 'https://api.yukiworks.nl/ws/Sales.asmx?WSDL';
     const ACCOUNTING_WSDL = 'https://api.yukiworks.nl/ws/Accounting.asmx?WSDL';
+    const ACCOUNTINGINFO_WSDL = 'https://api.yukiworks.nl/ws/AccountingInfo.asmx?WSDL';
 
     private $soap, // the SOAP client
         // the currently active identifiers for the logged in Yuki user:
@@ -217,6 +219,9 @@ class Yuki
             case 'accounting':
                 return self::ACCOUNTING_WSDL;
                 break;
+            case 'accountinginfo':
+                return self::ACCOUNTINGINFO_WSDL;
+                break;
             default:
                 return self::SALES_WSDL;
                 break;
@@ -238,6 +243,15 @@ class Yuki
         }
         catch(Exception $e){
             throw new Exception('Could not retrieve AccountBalance for adminstration ' . $this->aid . ' and date: ' .$date);
+        }
+    }
+
+    public function GetAccountCodes(){
+        try{
+            return $this->GetGLAccountScheme(['sessionID' => $this->sid, 'administrationID' => $this->aid]);
+        }
+        catch(Exception $e){
+            throw new Exception('Could not retrieve AccountCodes for adminstration ' . $this->aid . ' and session: ' . $this->sid);
         }
     }
 
