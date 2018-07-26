@@ -6,6 +6,7 @@ use Exception, SoapClient, SoapVar;
 
 /**
  * Connector for Yuki's Sales SOAP Webservice (subset), intended to create Sales Invoices.
+ * Also includes a few Accounting methods; see the code.
  *
  * by FunkyTime.com
  *
@@ -27,8 +28,8 @@ class Yuki
 
     private $soap, // the SOAP client
         // the currently active identifiers for the logged in Yuki user:
-        $sid; // SessionID
-    public $aid; // AdministrationID
+        $sid, // SessionID
+        $aid = null; // AdministrationID
 
 
     /**
@@ -174,6 +175,15 @@ class Yuki
             return $this->sid = $result->AuthenticateResult;
         }
         else throw new Exception('Authentication failed. Please check your company\'s Yuki accessKey.');
+    }
+
+    /**
+     * Get the currently loaded AdministrationID
+     * (small g because it's a class function rather than a web call)
+     * @return null|string
+     */
+    public function getAdministrationID() {
+        return $this->aid;
     }
 
 
