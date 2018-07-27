@@ -5,19 +5,26 @@ namespace FunkyTime;
 use Exception, SoapClient, SoapVar;
 
 /**
- * Connector for Yuki's Sales SOAP Webservice (subset), intended to create Sales Invoices.
+ * Connector for Yuki's Sales SOAP Webservice (subset), mainly intended to create Sales Invoices.
  * Also includes a few Accounting methods; see the code.
  *
  * by FunkyTime.com
  *
- * Magic methods (passed to SOAP call):
+ * Magic methods passed to SOAP call:
+ * General:
  * @method array Authenticate(array $params)
  * @method array Administrations(array $params)
+ *
+ * Sales:
  * @method array ProcessSalesInvoices(array $params)
+ *
+ * Accounting:
  * @method array CheckOutstandingItem(array $params)
  * @method array NetRevenue(array $params)
  * @method array GLAccountBalance(array $params)
  * @method array GLAccountTransactions(array $params)
+ *
+ * AccountingInfo:
  * @method array GetGLAccountScheme(array $params)
  */
 class Yuki
