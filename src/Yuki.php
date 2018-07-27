@@ -98,13 +98,13 @@ class Yuki
             foreach ($invoice['InvoiceLines'] as $InvoiceLine) {
                 $Line = '';
                 foreach (['ProductQuantity', 'LineAmount', 'LineVATAmount'] as $k) {
-                    if (!empty($InvoiceLine[$k])) {
+                    if (isset($InvoiceLine[$k]) && !is_null($InvoiceLine[$k])) {
                         $Line .= "<$k>{$InvoiceLine[$k]}</$k>";
                     }
                 }
                 $Product = '';
                 foreach(['Description', 'SalesPrice', 'VATPercentage', 'VATType', 'GLAccountCode', 'Remarks'] as $k) {
-                    if (!empty($InvoiceLine['Product'][$k])) {
+                    if (isset($InvoiceLine['Product'][$k]) && !is_null($InvoiceLine['Product'][$k])) {
                         $Product .= "<$k>{$InvoiceLine['Product'][$k]}</$k>";
                     }
                 }
@@ -112,8 +112,8 @@ class Yuki
             }
             $SalesInvoice .= '<InvoiceLines>'. implode($InvoiceLines) .'</InvoiceLines>';
         }
-        // die($SalesInvoice);
-        // XML doc, and send it
+
+        // Generate XML doc
         $xmlvar = new SoapVar(
             '<ns1:xmlDoc><SalesInvoices xmlns="urn:xmlns:http://www.theyukicompany.com:salesinvoices" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><SalesInvoice>'
                 . $SalesInvoice
