@@ -40,7 +40,9 @@ class Yuki
 
 
     /**
-     * Wrapper for ProcessSalesInvoices. Will throw an Exception if it did not succeed (e.g. duplicate invoice number).
+     * Wrapper for ProcessSalesInvoices.
+     * Will throw a ResponseException if it did not succeed (e.g. duplicate invoice number).
+     *
      * Format the parameter like this:
      * $invoice = [
      *   'Reference' => '',
@@ -66,7 +68,7 @@ class Yuki
      * @param array $invoice Invoice data in associative array, with matching Yuki keys
      * @param bool $escaped Todo: Whether the data is already trimmed and escaped for inclusion in XML tags
      * @return mixed
-     * @throws Exception
+     * @throws ResponseException
      */
     public function ProcessInvoice($invoice, $escaped = false) {
         // This currently assumes that all array values are properly escaped
@@ -134,7 +136,7 @@ class Yuki
         $result_xml = simplexml_load_string(current($return->ProcessSalesInvoicesResult));
         if (!$result_xml->TotalSucceeded->__toString()) {
             // None succeeded, so throw the error message
-            throw new Exception($result_xml->Invoice->Message);
+            throw new ResponseException($result_xml->Invoice->Message, $result_xml->asXML());
         }
         return true; // success
     }
