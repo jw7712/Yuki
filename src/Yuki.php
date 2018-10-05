@@ -222,8 +222,8 @@ class Yuki
             $result = $this->soap->__soapCall($method, $params);
             return $result;
         } catch (Exception $e) {
-            // rethrow with a little more information
-            throw new Exception("$method failed: [".$e->getCode().'] ' . $e->getMessage(), $e->getCode());
+            // rethrow with a little more information in Message
+            throw new Exception("$method failed: " . @$e->faultcode . ' ' . $e->getMessage() . '.');
         }
     }
 
