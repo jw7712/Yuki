@@ -71,9 +71,10 @@ class Yuki
      * @throws ResponseException
      */
     public function ProcessInvoice($invoice, $escaped = false) {
-        // This currently assumes that all array values are properly escaped
         if (!$escaped) {
-            // todo
+            array_walk_recursive($invoice, function(&$_v) {
+                $_v = htmlspecialchars(trim($_v), ENT_XML1);
+            });
         }
 
         // General fields
