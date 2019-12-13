@@ -113,6 +113,9 @@ class Yuki
                     }
                 }
                 $Product = '';
+                if (empty($InvoiceLine['Product']['Description'])) {
+                    $InvoiceLine['Product']['Description'] = ' '; // minimum String length for Description
+                }
                 foreach(['Description', 'SalesPrice', 'VATPercentage', 'VATType', 'GLAccountCode', 'Remarks'] as $k) {
                     if (isset($InvoiceLine['Product'][$k]) && !is_null($InvoiceLine['Product'][$k])) {
                         $Product .= "<$k>{$InvoiceLine['Product'][$k]}</$k>";
