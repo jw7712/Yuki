@@ -73,7 +73,7 @@ class Yuki
      * @return bool
      * @throws ResponseException
      */
-    public function ProcessInvoice(array $invoice, bool $escaped = false): bool {
+    public function ProcessInvoice(array $invoice, bool $escaped = false)/*: bool*/ {
         if (!$escaped) {
             array_walk_recursive($invoice, function(&$_v) {
                 $_v = htmlspecialchars(trim($_v), ENT_XML1);
@@ -82,13 +82,16 @@ class Yuki
 
         // General fields.
         $SalesInvoice = '';
-        foreach (['Reference', 'Subject', 'PaymentMethod', 'Date', 'DueDate', 'Currency', 'ProjectCode', 'Remarks'] as $k) {
+        foreach (['Reference', 'Subject', 'PaymentMethod', 'PaymentID', 'PurchaseOrderNumber', 'Date', 'DueDate', 'Currency', 'ProjectCode', 'Remarks', 'DocumentFileName', 'DocumentBase64'] as $k) {
             if (!empty($invoice[$k])) {
                 $SalesInvoice .= "<$k>$invoice[$k]</$k>";
             }
             if ($k === 'PaymentMethod') {
                 // invoice is marked as fully prepared
                 $SalesInvoice .= '<Process>true</Process>';
+                if(isset($invoice['EmailToCustomer']) && $invoice['EmailToCustomer'] == true){
+                    $SalesInvoice .= '<EmailToCustomer>true</EmailToCustomer>';
+                }
             }
         }
 
@@ -137,6 +140,8 @@ class Yuki
             XSD_ANYXML
         );
 
+        //dd($xmlDoc);
+
         $return = $this->ProcessSalesInvoices(['sessionId' => $this->sid, 'administrationId' => $this->aid, 'xmlDoc' => $xmlDoc]);
 
         // Check the result to see whether it was successful.
@@ -145,6 +150,7 @@ class Yuki
             // None succeeded, so throw the error message.
             throw new ResponseException($result_xml->Invoice->Message, $result_xml->asXML());
         }
+        dd($result_xml);
         return true; // success
     }
 
