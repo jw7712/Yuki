@@ -82,15 +82,22 @@ class Yuki
 
         // General fields.
         $SalesInvoice = '';
-        foreach (['Reference', 'Subject', 'PaymentMethod', 'PaymentID', 'PurchaseOrderNumber', 'Date', 'DueDate', 'Currency', 'ProjectCode', 'Remarks', 'DocumentFileName', 'DocumentBase64'] as $k) {
+        foreach (['Reference', 'Subject', 'PaymentMethod', 'PurchaseOrderNumber', 'Date', 'DueDate', 'Currency', 'ProjectCode', 'Remarks', 'DocumentFileName', 'DocumentBase64'] as $k) {
             if (!empty($invoice[$k])) {
                 $SalesInvoice .= "<$k>$invoice[$k]</$k>";
             }
             if ($k === 'PaymentMethod') {
                 // invoice is marked as fully prepared
+                if( isset($invoice['PaymentID']) && !empty($invoice['PaymentID']) ){
+                    $SalesInvoice .= '<PaymentID>'.$invoice['PaymentID'].'</PaymentID>';
+                }
                 $SalesInvoice .= '<Process>true</Process>';
                 if(isset($invoice['EmailToCustomer']) && $invoice['EmailToCustomer'] == true){
                     $SalesInvoice .= '<EmailToCustomer>true</EmailToCustomer>';
+                }
+                // Add SentToPeppol tag when explicitly set (expects string 'true')
+                if (isset($invoice['SentToPeppol']) && $invoice['SentToPeppol'] !== '') {
+                    $SalesInvoice .= '<SentToPeppol>'.$invoice['SentToPeppol'].'</SentToPeppol>';
                 }
             }
         }
@@ -122,6 +129,9 @@ class Yuki
                 if (empty($InvoiceLine['Product']['Description'])) {
                     $InvoiceLine['Product']['Description'] = ' '; // minimum String length for Description
                 }
+                if (empty($InvoiceLine['Product']['Reference'])) {
+                    $InvoiceLine['Product']['Reference'] = ' '; // minimum String length for Description
+                }
                 foreach(['Description', 'SalesPrice', 'VATPercentage', 'VATType', 'GLAccountCode', 'Remarks'] as $k) {
                     if (isset($InvoiceLine['Product'][$k]) && !is_null($InvoiceLine['Product'][$k])) {
                         $Product .= "<$k>{$InvoiceLine['Product'][$k]}</$k>";
@@ -150,7 +160,7 @@ class Yuki
             // None succeeded, so throw the error message.
             throw new ResponseException($result_xml->Invoice->Message, $result_xml->asXML());
         }
-        dd($result_xml);
+        //dd($result_xml);
         return true; // success
     }
 
